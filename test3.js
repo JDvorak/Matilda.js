@@ -17,17 +17,44 @@ var loadDirectory = function(path){
 	}
 }
 
-var process = function(docs, n) {
-	TfIdf = new natural.TfIdf;
+var process = function(docs, n, percentage) {
+	var processedDocs = {};
+			 wordBag      = {},
+				 vocab     = {},
+				 words   = [],
+				   cut  = 0,
+				 	 len = 0,
+					   n = 0;
+
+	tfidf  = new natural.TfIdf;
 
 	for (d in docs) {
-		TfIdF.addDocument(d);
+		wordBags[n] = natural.PorterStemmer.tokenizeAndStem(d);
+		tfidf.addDocument(wordBags[n]);
+
+		len = tfidf.listTerms(n).length-1;
+		cut = (1-percentage)/2;
+		words = tfidf.listTerms(n).slice(cut, (len-cut));
+		
+		for (w in words) {
+			if (!!vocab[words[w].term]) continue;
+			vocab[words[w].term] = {word: words[w].term, count: 0};
+		}
+
+		n = 0;
+
+		for (d in docs) {
+			processDocs[n]
+			
+			n++;
+		}
+
+		n++;
 	}
 
+	
+
 };
-
-console.log(process("Hello My darling", 4))
-
 
 
 //// Don't for the, life of god, touch any of the following:
@@ -93,8 +120,10 @@ var bpsLDA = function(data, k, trials, alpha, beta, beenChewed) {
       perplexity, count,
       normal, dnormal;
 
+ 
 
   while (trials--) {
+
     shuffle(Docs)
     normal = 0;
     
@@ -104,7 +133,6 @@ var bpsLDA = function(data, k, trials, alpha, beta, beenChewed) {
             Topics[t].words[w].likelihood -= Messages[t][w] * Docs[d].words[w].count;
             Topics[t].likelihood          -= Messages[t][w] * Docs[d].words[w].count;
             Topics[t].docs[d].likelihood  -= Messages[t][w] * Docs[d].words[w].count;       
-
 
             Messages[t][w] =  (Topics[t].words[w].likelihood + Docs[d].words[w].count + beta) /
                              (Topics[t].docs[d].likelihood + Docs[d].words[w].count + alpha) *
