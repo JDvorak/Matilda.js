@@ -46,8 +46,7 @@ function Model(params) {
           words[token] = {
                           _id: token,
                           isTopic: 0, 
-                          total: 0,
-                          withWord: {}
+                          total: 0
                          };
 
           for (t in topics) {
@@ -88,7 +87,7 @@ function Model(params) {
 
         var sum = 0;
         for (var t = 0; t < numberOfTopics; t++) {
-          topicWeights[t]  = (beta + currentDoc.topicsCounts[t])  // some of these are bad names
+          topicWeights[t]  = (beta + currentDoc.topicsCounts[t])  // ALL DOCUMENTS
           topicWeights[t] *= (alpha + topics[t].withWord[curWord._id]) 
           topicWeights[t] /= (numberOfWords * beta + topics[t].wordTotal);               
           sum += topicWeights[t]
