@@ -1,10 +1,6 @@
 /* Studious.js
- * Belief Propagation and Gibbs Sampling for Latent Dirichlet Allocation
- * Trains a Gibbs.
- * Model can be set to Relational Topic Model, Author Topic Model, and Topic Model
+ * Gibbs Sampling for Latent Dirichlet Allocation
  */
-
-// It should be provided an object which it 'trains on' think jquery objects
 
 function Model(params) {
 
@@ -20,12 +16,6 @@ function Model(params) {
       beta              = 0,
       alpha             = 0,    
       words             = {};
-
-  this.toString = function() {
-    console.log( 
-      "topics: ", topics, numberOfTopics, "weights: ", topicWeights, 
-      "count: ", numberOfDocuments, documents, "words: ", numberOfWords, wordCount, words);
-  }
 
   this.addDocument = function(doc, callback){
     if (doc instanceof Array) {
@@ -75,10 +65,9 @@ function Model(params) {
 
     return this;
   }
-  //Models
+
 
   this.train = function(callback) {
-    debugger
 
     documents.forEach(function(currentDoc, i) {
       for (var w = 0; w < currentDoc.wordCount; w++) {
@@ -102,32 +91,31 @@ function Model(params) {
   };
 
 
-   //Helpers
-   var _shelf = function(curWord, currentDoc, direction) {
-     var move = 0;
-     if (direction === 'put') {
-       move = 1;
-     } else if (direction === 'pull') {
-       move = -1;
-     }
+  //Helpers
+  var _shelf = function(curWord, currentDoc, direction) {
+    var move = 0;
+    if (direction === 'put') {
+      move = 1;
+    } else if (direction === 'pull') {
+      move = -1;
+    }
 
-    // topics[curWord.isTopic].docTotal += move;
     topics[curWord.isTopic].withWord[curWord._id] += move;
     currentDoc.topicsCounts[curWord.isTopic] += move;
     topics[curWord.isTopic].wordTotal += move;
-   }
+  }
 
-   var _initializeTopics = function(){
-     for (var k = 0; k < numberOfTopics; k++) {
-       topicWeights[k] = (1/numberOfTopics);
-       topics[k] = {
+  var _initializeTopics = function(){
+    for (var k = 0; k < numberOfTopics; k++) {
+      topicWeights[k] = (1/numberOfTopics);
+      topics[k] = {
                   _id:       k,
                   withWord:  {}, 
                   wordTotal: 0, 
-                 };
-     };
-     for (w in words) {_assignRandomly(words[w])};
-   };
+                  };
+    };
+  for (w in words) {_assignRandomly(words[w])};
+  };
 
   var _assignRandomly = function(word) {
     var random = Math.floor(Math.random() * numberOfTopics);
@@ -135,7 +123,7 @@ function Model(params) {
     if (!topics[random].withWord[word._id]) topics[random].withWord[word._id] = 0;
     topics[random].withWord[word._id]++;
     topics[random].wordTotal++;
-   }
+  }
 
   var _weightedRandom = function(weights, sum) {
     var sample = sum * Math.random(),
@@ -158,11 +146,9 @@ function Model(params) {
     if (params.words)               words = params.words;
     if (params.alpha)               alpha = params.alpha;
     if (params.beta)                 beta = params.beta;
+    if (params.model) setModel(model);
   }; 
-
-
 
   _readParams(params);
   _initializeTopics();
-
 };
