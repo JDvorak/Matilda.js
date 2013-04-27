@@ -1,5 +1,5 @@
 # Matilda.js
-v0.0.0.1alpha
+v0.0.1a
 
 - - -
 
