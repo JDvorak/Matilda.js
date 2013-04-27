@@ -9,7 +9,7 @@ This is a Javascript library for performing convenient inference on statistical 
 
 ## Project Maturity
 
-This project is in pre-alpha. This is __not__ yet a production library. Expect the interface to change drastically from week to week, and the functionality and performance to flucuate. Your code __will__ break as this project progresses.
+This project is in pre-alpha. This is __not__ a production library. Expect the interface to change drastically from week to week, and the functionality and performance to flucuate wildly. Your code __will__ break as this project progresses. Proceed at your own risk.
 
 ## Dependencies
 This is a standalone library. 
