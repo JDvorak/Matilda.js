@@ -3,18 +3,18 @@
 
 This is a Javascript library for performing convenient inference on statistical topic models. It presently performs Latent Dirichlet Allocation by way of Markov Chain Monte Carlo (MCMC).
 
-## Supported Techniques
+### Supported Techniques
 * Latent Dirichlet Allocation
   - Sparse Gibbs Sampling
 
-## Project Maturity
+### Project Maturity
 
 This project is in pre-alpha. This is __not__ a production library. Expect the interface to change drastically from week to week, and the functionality and performance to flucuate wildly. Your code __will__ break as this project progresses. Proceed at your own risk.
 
-## Dependencies
+### Dependencies
 This is a standalone library. 
 
-## Roadmap
+### Roadmap
 * v0.0.1
   - Documentation
 * v0.0.2
