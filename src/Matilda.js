@@ -4,8 +4,9 @@
 
 function Model(params) {
 
-  var topics            = [],
-      numberOfTopics    = 0,   
+  //Defaults
+  var topics            = [], 
+      numberOfTopics    = 5,   
       topicWeights      = [],    
       documents         = [], 
       numberOfDocuments = 0, 
@@ -27,16 +28,15 @@ function Model(params) {
         for (var w = 0; w < currentDoc.wordCount; w++) {
           curWord = currentDoc.bagOfWords[w];
 
-
           topics[curWord.isTopic].withWord[curWord._id]--;
           topics[curWord.isTopic].wordTotal--;
           
           sum = 0;
           
           for (var t = 0; t < numberOfTopics; t++) {
-            topicWeights[t]  = (beta + currentDoc.topicsCounts[t])  
-            topicWeights[t] *= (alpha + topics[t].withWord[curWord._id]) 
-            topicWeights[t] /= (numberOfWords * beta + topics[t].wordTotal);               
+            topicWeights[t]  = (alpha + currentDoc.topicsCounts[t])  
+            topicWeights[t] *= (beta + topics[t].withWord[curWord._id]) 
+            topicWeights[t] /= (numberOfWords * alpha + topics[t].wordTotal);               
             sum += topicWeights[t]
           }
           curWord.isTopic = _weightedRandom(topicWeights, sum)
@@ -45,20 +45,26 @@ function Model(params) {
           topics[curWord.isTopic].wordTotal++;
         }
 
-      for (var t = 0; t < numberOfTopics; t++) {
-        topicWeights[t] /= sum;
-        currentDoc.topicsCounts[t] = 0;
-      };
+        //Normalize Weights, and while we're at it, clear the topicCounts.
+        for (var t = 0; t < numberOfTopics; t++) {
+          topicWeights[t] /= sum;
+          currentDoc.topicsCounts[t] = 0;
+        };
 
-      currentDoc.bagOfWords.forEach(function (token) {
-        currentDoc.topicsCounts[token.isTopic] += 1;
-      });
+        //Now put them back now.
+        currentDoc.bagOfWords.forEach(function (token) {
+          currentDoc.topicsCounts[token.isTopic] += 1;
+        });
         
       });
 
     };
     return this;
   };
+
+  this.readFile = function(dir) {
+
+  }
 
   this.addDocument = function(doc, callback){
     if (doc instanceof Array) {
@@ -110,18 +116,19 @@ function Model(params) {
   }
 
   this.wordsByTopics = function(){
-    var topicWordCounts = _emptyMatrix(),
+    var topicWordCounts = _emptyMatrix(numberOfWords, numberOfTopics),
         highest;
 
     for (var t = 0; t < numberOfTopics; t++) {
       highest = 0;
       for (w in topics[t].withWord) {
-
+        topicWordCounts[]
       }
     }
   };
 
   this.topicCorrelations = function(){
+    //FIX
     var correlationMatrix = _emptyMatrix(numberOfTopics),
         meanLogLikelihood = [],
         logLikelihoodOfDoc = [],
@@ -236,7 +243,6 @@ function Model(params) {
   var _readParams = function(params) {
     if (params.topicWeights) topicWeights = params.topicWeights;
     if (params.numberOfTopics) numberOfTopics = params.numberOfTopics;
-    if (params.documents) documents = params.documents;
     if (params.words) words = params.words;
     if (params.alpha) alpha = params.alpha;
     if (params.beta) beta = params.beta;
