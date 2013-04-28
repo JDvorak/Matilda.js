@@ -71,7 +71,7 @@ Now that the documents have been added, you can train your model.
 By default models are set to five topics.
 You can overide this defaults by using the setNumberOfTopics method.
 
-   mM.setNumberOfTopics(3);
+    mM.setNumberOfTopics(3);
 
 It looks like everything is good to go. 
 Time to train.
