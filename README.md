@@ -63,7 +63,7 @@ It is recommended that at least 50 iterations be made, but for this simple examp
 
     mM.train(5);
 
-__WARNING:__ Setting the Model's Topic Count will erase all model data.
+__WARNING:__ Setting the Model's Topic Count _after_ training will erase all training.
 
 #### Step 4. Wait
 
