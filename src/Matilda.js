@@ -5,6 +5,9 @@
 var Matilda = {};
 
 Matilda.Model = (function () {
+
+
+   // / Helpers / /    / 
   var emptyMatrix = function(height, width) {
     var height = height,
         width = width || height, 
@@ -16,7 +19,6 @@ Matilda.Model = (function () {
         newMatrix[t1][t2] = 0.0;
       }
     }
-
     return newMatrix;
   }
 
@@ -42,6 +44,7 @@ Matilda.Model = (function () {
     return i;
   };
 
+  // / The Main Event / /    / 
   function Model(params) {
     var topics            = [], 
         numberOfTopics    = 5,   
@@ -55,7 +58,7 @@ Matilda.Model = (function () {
         words             = {};
 
     var recalculateAlpha = function() {
-      beta = numberOfTopics/50
+      beta = numberOfTopics/50;
     }
     
     var recalculateBeta = function() {
@@ -69,11 +72,12 @@ Matilda.Model = (function () {
         topicWeights[k] = (1/numberOfTopics);
         topics[k] = {
                     id:       k,
-                    withWord:  {}, 
+                    withWord: {}, 
                     wordTotal: 0, 
                     };
       };
-    for (w in words) {assignRandomly(words[w])};
+
+      for (w in words) {assignRandomly(words[w])};
     };
 
     var assignRandomly = function(word) {
@@ -94,8 +98,10 @@ Matilda.Model = (function () {
       callback.call(context, dataObject, whatElse);
     };
 
-    // / Methods / /    / 
 
+
+
+    // / Methods / /    / 
     this.setNumberOfTopics = function(K) {
       numberOfTopics = K;
       recalculateAlpha();
@@ -250,7 +256,6 @@ Matilda.Model = (function () {
 
       return correlationMatrix;
     };
-
 
     this.getDocuments = function() {
       return documents;
