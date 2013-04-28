@@ -212,16 +212,15 @@ var bpsLDA = function(data, k, trials, alpha, beta) {
     for (t in Topics) {
      normal += Topics[t].likelihood;
     for (d in Topics[t].docs) {
-      Topics[t].docs[d].likelihood /= Topics[t].likelihood ;         
+      Topics[t].docs[d].likelihood /= Topics[t].likelihood;         
     }  
     for (w in Topics[t].words) {
-      Topics[t].words[w].likelihood /= Topics[t].likelihood
+      Topics[t].words[w].likelihood /= Topics[t].likelihood;
     }
   }
   for (t in Topics) {
     Topics[t].likelihood /= normal;
   }
-
 
   return {messages: Messages,
   				topics: Topics,
@@ -240,27 +239,6 @@ var shuffle = function (array, random) {
   return array;
 }
 
-var weightedRandom = function(items) {
-  var sum = 0,
-      i,
-      temp,
-      choice;
-
-  for (i in items) {
-    sum += items[i].likelihood
-  }
-
-  temp = sum * Math.random();
-  for (i in items) {
-     if (temp < items[i].likelihood) {
-        choice = i
-        break;
-     } else {
-      temp = temp - items[i].likelihood
-     }
-  }
-  return choice;
-}
 
 
 var testBPS = function(topicCount, wordCount, docCount) {
