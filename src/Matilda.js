@@ -4,7 +4,6 @@
 
 function Model(params) {
 
-  //Defaults
   var topics            = [], 
       numberOfTopics    = 5,   
       topicWeights      = [],    
@@ -18,8 +17,8 @@ function Model(params) {
 
   this.setNumberOfTopics = function(K) {
     numberOfTopics = K
-    _recalculateAlpha();
-    _initializeTopics();
+    recalculateAlpha();
+    initializeTopics();
     return this;
   }; 
 
@@ -35,20 +34,20 @@ function Model(params) {
         for (var w = 0; w < currentDoc.wordCount; w++) {
           curWord = currentDoc.bagOfWords[w];
 
-          topics[curWord.isTopic].withWord[curWord._id]--;
+          topics[curWord.isTopic].withWord[curWord.id]--;
           topics[curWord.isTopic].wordTotal--;
           
           sum = 0;
           
           for (var t = 0; t < numberOfTopics; t++) {
             topicWeights[t]  = (beta + currentDoc.topicsCounts[t])  
-            topicWeights[t] *= (alpha + topics[t].withWord[curWord._id]) 
+            topicWeights[t] *= (alpha + topics[t].withWord[curWord.id]) 
             topicWeights[t] /= (numberOfWords * beta + topics[t].wordTotal);               
             sum += topicWeights[t]
           }
-          curWord.isTopic = _weightedRandom(topicWeights, sum)
+          curWord.isTopic = weightedRandom(topicWeights, sum)
 
-          topics[curWord.isTopic].withWord[curWord._id]++;
+          topics[curWord.isTopic].withWord[curWord.id]++;
           topics[curWord.isTopic].wordTotal++;
         }
 
@@ -69,53 +68,54 @@ function Model(params) {
     return this;
   };
 
-  this.readFile = function(dir) {
-
-  }
-
   this.addDocument = function(doc, callback){
     if (doc instanceof Array) {
-      var token,
-          newDoc = {
-                    bagOfWords: [], 
-                    wordCount: 0,
-                    topicsCounts: []
-                   };
-      for (t in topics) {
-        newDoc.topicsCounts[t] = 0;
-      };
-
-      for (w in doc) {
-        token = doc[w];
-
-        if (!words[token]) {
-          words[token] = {
-                          _id: token,
-                          isTopic: 0, 
-                          total: 0
-                         };
-
-          for (t in topics) {
-            topics[t].withWord[token] = 0;
-          }
-
-          numberOfWords++;
-          _recalculateBeta();
+      if (doc[0] instanceof Array) {
+        for (var subDoc = 0, len = doc.length; subDoc < len; subDoc++) {
+          this.addDocument(doc[subDoc]);
+        }
+      } else {
+        var token,
+            newDoc = {
+                      bagOfWords: [], 
+                      wordCount: 0,
+                      topicsCounts: []
+                     };
+        for (t in topics) {
+          newDoc.topicsCounts[t] = 0;
         };
 
-        _assignRandomly(words[token]);
-        if (!newDoc.topicsCounts[words[token].isTopic]) newDoc.topicsCounts[words[token].isTopic] = 0;
-        newDoc.topicsCounts[words[token].isTopic]++;
-        newDoc.wordCount++;
-        words[token].total++;
-        wordCount++;
-        newDoc.bagOfWords.push(words[token]);
+        for (w in doc) {
+          token = doc[w];
+
+          if (!words[token]) {
+            words[token] = {
+                            id: token,
+                            isTopic: 0, 
+                            total: 0
+                           };
+
+            for (t in topics) {
+              topics[t].withWord[token] = 0;
+            }
+
+            numberOfWords++;
+            recalculateBeta();
+          };
+
+          assignRandomly(words[token]);
+          if (!newDoc.topicsCounts[words[token].isTopic]) newDoc.topicsCounts[words[token].isTopic] = 0;
+          newDoc.topicsCounts[words[token].isTopic]++;
+          newDoc.wordCount++;
+          words[token].total++;
+          wordCount++;
+          newDoc.bagOfWords.push(words[token]);
+        }
+
+        documents.push(newDoc);
+        numberOfDocuments++;
+
       }
-
-      documents.push(newDoc);
-      numberOfDocuments++;
-
-
     } else {
       throw new Error("Pre-process Your Data and Try Again.");
     };
@@ -123,28 +123,27 @@ function Model(params) {
     return this;
   }
 
-  this.wordsByTopics = function(){
-    var topicWordCounts = _emptyMatrix(numberOfWords, numberOfTopics),
-        highest;
+  this.getDocuments = function() {
+    return documents;
+  }
 
-    // for (var t = 0; t < numberOfTopics; t++) {
-    //   highest = 0;
-    //   for (w in topics[t].withWord) {
-    //     topicWordCounts[]
-    //   }
-    // }
-  };
+  this.getTopics = function() {
+    return topics;
+  }
+
+  this.getVocabulary = function() {
+    return words;
+  }
 
   this.topicCorrelations = function(){
-    //FIX
-    var correlationMatrix = _emptyMatrix(numberOfTopics),
+    var correlationMatrix = emptyMatrix(numberOfTopics),
         meanLogLikelihood = [],
         logLikelihoodOfDoc = [],
         normalizer = 1.0 / (numberOfDocuments - 1),
         standardDeviations = [];
 
 
-    for (var t = 0; t < numberOfTopics-1; t++) {
+    for (var t = 0; t < numberOfTopics; t++) {
       meanLogLikelihood[t] = 0.0;
     }
 
@@ -152,7 +151,7 @@ function Model(params) {
       var bagOfWordsLength = currentDoc.bagOfWords.length
 
       logLikelihoodOfDoc[i] = [];
-      for (var t = 0; t < numberOfTopics-1; t++) {
+      for (var t = 0; t < numberOfTopics; t++) {
         logLikelihoodOfDoc[i][t] = Math.log((currentDoc.topicsCounts[t] + beta) /
                                            (bagOfWordsLength + numberOfTopics * beta))
         meanLogLikelihood[t] += logLikelihoodOfDoc[i][t];
@@ -160,26 +159,26 @@ function Model(params) {
       }
     });
 
-    for (var t = 0; t < numberOfTopics-1; t++) {
+    for (var t = 0; t < numberOfTopics; t++) {
       meanLogLikelihood[t] /= numberOfDocuments;
     }
 
-    for (var d = 0; d < numberOfDocuments-1; d++) {      
-      _matrixEach(correlationMatrix, function(t1, t2){
+    for (var d = 0; d < numberOfDocuments; d++) {      
+      matrixEach(correlationMatrix, function(t1, t2){
         correlationMatrix[t1][t2] +=  (logLikelihoodOfDoc[d][t1] - meanLogLikelihood[t1]) *
                                       (logLikelihoodOfDoc[d][t2] - meanLogLikelihood[t2])
       }, this);
     }
 
-    _matrixEach(correlationMatrix, function(t1, t2) {
+    matrixEach(correlationMatrix, function(t1, t2) {
       correlationMatrix[t1][t2] *= normalizer
     }, this);
 
-    for (var t = 0; t < numberOfTopics-1; t++) {
+    for (var t = 0; t < numberOfTopics; t++) {
       standardDeviations[t] = Math.sqrt(correlationMatrix[t][t]);
     }
 
-    _matrixEach(correlationMatrix, function(t1, t2){
+    matrixEach(correlationMatrix, function(t1, t2){
       correlationMatrix[t1][t2] /= (standardDeviations[t1] * standardDeviations[t2]);
     }, this);
 
@@ -187,79 +186,36 @@ function Model(params) {
   };
 
 
-
-  //Helpers
-
-  var _emptyMatrix = function(height, width) {
-    var height = height,
-        width = width || height, //Make as Square
-        newMatrix = []; 
-
-    for (var t1 = 0; t1 < height; t1++) {
-      newMatrix[t1] = [];
-      for (var t2 = 0; t2 < width; t2++) {
-        newMatrix[t1][t2] = 0.0;
-      }
-    }
-
-    return newMatrix;
-  }
-
-
-  var _matrixEach = function(matrix, callback, context) {
-    var len = matrix.length-1;
-    for (var t1 = 0; t1 < len; t1++) {
-      for (var t2 = 0; t2 < len; t2++) {
-        callback.call(context, t1, t2, matrix)
-      }  
-    }
-  }
-
-
-  var _initializeTopics = function(){
-    topics = undefined;
-    topicWeights = undefined;
+  var initializeTopics = function(){
+    topics = [];
+    topicWeights = [];
     for (var k = 0; k < numberOfTopics; k++) {
       topicWeights[k] = (1/numberOfTopics);
       topics[k] = {
-                  _id:       k,
+                  id:       k,
                   withWord:  {}, 
                   wordTotal: 0, 
                   };
     };
-  for (w in words) {_assignRandomly(words[w])};
+  for (w in words) {assignRandomly(words[w])};
   };
 
-  var _assignRandomly = function(word) {
+  var assignRandomly = function(word) {
     var random = Math.floor(Math.random() * numberOfTopics);
     word.isTopic = random;
-    if (!topics[random].withWord[word._id]) topics[random].withWord[word._id] = 0;
-    topics[random].withWord[word._id]++;
+    if (!topics[random].withWord[word.id]) topics[random].withWord[word.id] = 0;
+    topics[random].withWord[word.id]++;
     topics[random].wordTotal++;
   }
 
-  var _weightedRandom = function(weights, sum) {
-    var sample = sum * Math.random(),
-             i = 0;
-
-    sample -= weights[i];
-
-    while (sample > 0.0) {
-      i++;
-      sample -= weights[i];
-    }
-    return i;
-  };
-
-  var _recalculateBeta = function() {
+  var recalculateBeta = function() {
     alpha = numberOfWords/200;
   }
 
-  var _recalculateAlpha = function() {
+  var recalculateAlpha = function() {
     beta = numberOfTopics/50
   }
 
-
-  // _readParams(params);
-  _initializeTopics();
+  // readParams(params);
+  initializeTopics();
 };

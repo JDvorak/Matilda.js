@@ -76,11 +76,15 @@ A Topic by Topic matrix of correlations may be obtained by calling the topicCorr
 
     mM.topicCorrelations();
 
-A list of words by each Topic may be obtained by calling the wordsByTopics method.
+You can get back the documents containing their respective features, and their topic proportions.
 
-    mM.wordsByTopics();
+    mM.getDocuments();
 
-You can even query the words themselves!
+You can get an object containing all the Topics, and their words.
+
+    mM.getTopics();
+
+You can even look over the words themselves and their topic memberships.
 
     mM.getVocabulary();
 
