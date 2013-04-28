@@ -56,11 +56,12 @@ When sending multiple documents via addDocument, the callback is run after
 every individual document is inserted into the object.
 The callback receives an object containing model data, and the current document
 
-    mM.addDocument(["Cats", "Dogs", "Parrots", "Fish"], function(dataObject, curDoc) {
-      console.log(dataObject.vocab)
-      console.log(dataObject.topics)
-      console.log(dataObject.documents)
-      }) 
+    mM.addDocument(["Cats", "Dogs", "Parrots", "Fish"], 
+                    function(dataObject, curDoc) {
+                      console.log(dataObject.vocab)
+                      console.log(dataObject.topics)
+                      console.log(dataObject.documents)
+                    }) 
 
 For natural word pre-rocessing [NaturalNode](https://github.com/NaturalNode/natural) is highly recommended.
 
@@ -90,11 +91,7 @@ The callback receives an object containing the topics, vocabulary, and document 
       console.log(modelData.documents)
     })
 
-#### Step 4. Wait
-
-It isn't all magic.
-
-#### Step 5. Enjoy
+#### Step 4. Enjoy
 
 There are a number of features that can be drawn from the training.
 A Topic by Topic matrix of correlations may be obtained by calling the topicCorrelations method. 
@@ -119,7 +116,12 @@ Don't forget, this is a fluent library. You can chain things.
     mM.setNumberOfTopics(3)
       .addDocument([["Cats", "Dogs", "Parrots", "Fish"], 
                     ["Fish", "Sharks", "Parrots", "Green"],
-                    ["Tables", "Poker", "Green", "Sharks"]]);  
+                    ["Tables", "Poker", "Green", "Sharks"]],
+                    function(dataObject) {
+                      console.log(modelData.vocab)
+                      console.log(modelData.topics)
+                      console.log(modelData.documents)
+                    });  
     
     var topicMatrix = mM.train(5).topicCorrelations();
 
@@ -128,24 +130,26 @@ Don't forget, this is a fluent library. You can chain things.
 The smoothing factors of LDA are at present automated.
 
 ## Roadmap
-* v0.0.1
-  - Output Words by Topic
-  - Read from files
 * v0.0.2
-  - Simplified Belief Propagation
-* v0.0.3
   - Saving to JSON
   - Loading from JSON
+  - Read from files
+  - Simplified Belief Propagation
+* v0.0.3
   - Fast Gibbs Sampling
+  - Online Fast Gibbs Sampling
 * v0.0.4
   - Fast Belief Propagation
-  - Online Fast Gibbs Sampling
-* v0.0.5
   - Online Fast Belief Propagation
-* v0.1.0
+* v0.0.5
   - Relational Topic Model (RTM)
   - Author Topic Model (ATM)
   - Topic User Community Model (TUCM)
+* v0.1.0
+  - Natural Language Processing
+* v1.0.0
+  - Full Support for Markov Logic, and Graphical Models
+
 
 ## Acknowledgements
 Matilda.js is based on [LDAjs](https://github.com/mimno/jsLDA), [Gensim](http://radimrehurek.com/gensim/), and [Mallet](http://mallet.cs.umass.edu/), and inspired by the works of [David Mimno](http://www.cs.princeton.edu/~mimno/), [Ted Underwood](http://tedunderwood.com/), [David Blei](http://www.cs.princeton.edu/~blei/), [Roald Dahl](http://www.roalddahl.com/), and [Sir John Carden](http://www.tankmuseum.org/ixbin/indexplus?_IXSS_=_IXMENU_%3dVehicles%26ALL%3dmatilda%26_IXACTION_%3dsummary%26%252asform%3d%252fsearch_form%252fbovtm_combined%26_IXSESSION_%3d3N23FDeXD_4%26TYPE%3darticle%26_IXFPFX_%3dtemplates%252fsummary%252f&_IXFIRST_=12&_IXSPFX_=templates/full/tvod/t&_IXMAXHITS_=1&submit-button=summary&_IXSESSION_=3N23FDeXD_4&_IXMENU_=Vehicles).
