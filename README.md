@@ -46,6 +46,12 @@ They represent the features that the model will be trained on.
       .addDocument(["Fish", "Sharks", "Parrots", "Green"])
       .addDocument(["Tables", "Poker", "Green", "Sharks"]);
 
+But it also takes an array of arrays.
+
+    mM.addDocument([["Cats", "Dogs", "Parrots", "Fish"], 
+                    ["Fish", "Sharks", "Parrots", "Green"],
+                    ["Tables", "Poker", "Green", "Sharks"]])  
+
 For natural word pre-rocessing [NaturalNode](https://github.com/NaturalNode/natural) is highly recommended.
 
 #### Step 3. Train
