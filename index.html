@@ -32,11 +32,12 @@
       <section>
         <h1>Matilda.js</h1>
 
-<h1>v0.0.1a</h1>
+<h1>v0.0.1</h1>
 
 <p>Matilda is a webscale inference toolkit. </p>
 
-<p>This Javascript library makes it easy and convenient to perform inference on statistical topic models in both the browser and on the server. It presently performs Latent Dirichlet Allocation by way of Markov Chain Monte Carlo (MCMC).</p>
+<p>This Javascript library makes it easy and convenient to perform inference on statistical topic models in both the browser and on the server. 
+It presently performs Latent Dirichlet Allocation by way of Markov Chain Monte Carlo (MCMC).</p>
 
 <h2>Supported Techniques</h2>
 
@@ -49,11 +50,100 @@
 </li>
 </ul><h2>Project Maturity</h2>
 
-<p>This project is in pre-alpha. This is <strong>not</strong> a production library. Expect the interface to change drastically from week to week, and the functionality and performance to flucuate wildly. Your code <strong>will</strong> break as this project progresses. Proceed at your own risk.</p>
+<p>This project is in pre-alpha. 
+This is <strong>not</strong> a production library. 
+Expect the interface to change drastically from week to week, and the functionality and performance to flucuate wildly. 
+Your code <strong>will</strong> break as this project progresses. 
+Proceed at your own risk.</p>
 
 <h2>Dependencies</h2>
 
 <p>This is a standalone library. </p>
+
+<h2>Usage</h2>
+
+<p>Matilda is a fluently structured toolkit styled after d3.js. </p>
+
+<h4>Step 1. Instantiate a Model</h4>
+
+<p>The basic unit of Matilda is a Matilda model.</p>
+
+<pre><code>  var mM = new Matilda.Model();
+</code></pre>
+
+<p>A model has two core components. An engine, and a model. 
+By default, the engine is a Simplified Gibbs Sampler (siGS), and the model is a Latent Dirichlet Allocation (LDA) based Topic Model. 
+At present, this is the only model and only engine available.</p>
+
+<h4>Step 2. Add Documents</h4>
+
+<p>To train a Matilda model, you must first addDocuments. 
+The method addDocuments takes an array of words.
+But they need not be strings, they can also be numbers.
+They represent the features that the model will be trained on.</p>
+
+<pre><code>mM.addDocument(["Cats", "Dogs", "Parrots", "Fish"]) 
+  .addDocument(["Fish", "Sharks", "Parrots", "Green"])
+  .addDocument(["Tables", "Poker", "Green", "Sharks"]);
+</code></pre>
+
+<p>For natural word pre-rocessing <a href="https://github.com/NaturalNode/natural">NaturalNode</a> is highly recommended.</p>
+
+<h4>Step 3. Train</h4>
+
+<p>Now that the documents have been added, you can train your model.
+By default models are set to five topics.
+You can overide this defaults by using the setNumberOfTopics method.</p>
+
+<p>mM.setNumberOfTopics(3);</p>
+
+<p>It looks like everything is good to go. 
+Time to train.
+Train is a method which takes a number which represents the number of iterations.
+It is recommended that at least 50 iterations be made, but for this simple example 5 will do.</p>
+
+<pre><code>mM.train(5);
+</code></pre>
+
+<p><strong>WARNING:</strong> Setting the Model's Topic Count will erase all model data.</p>
+
+<h4>Step 4. Wait</h4>
+
+<p>It isn't all magic.</p>
+
+<h4>Step 5. Enjoy</h4>
+
+<p>There are a number of features that can be drawn from the training.
+A Topic by Topic matrix of correlations may be obtained by calling the topicCorrelations method. </p>
+
+<pre><code>mM.topicCorrelations();
+</code></pre>
+
+<p>A list of words by each Topic may be obtained by calling the wordsByTopics method.</p>
+
+<pre><code>mM.wordsByTopics();
+</code></pre>
+
+<p>You can even query the words themselves!</p>
+
+<pre><code>mM.getVocabulary();
+</code></pre>
+
+<h4>Also Chains!</h4>
+
+<p>Don't forget, this is a fluent library. You can chain things.</p>
+
+<pre><code>mM.setNumberOfTopics(3)
+  .addDocument(["Cats", "Dogs", "Parrots", "Fish"]) 
+  .addDocument(["Fish", "Sharks", "Parrots", "Green"])
+  .addDocument(["Tables", "Poker", "Green", "Sharks"])
+
+var topicMatrix = mM.train(5).topicCorrelations()
+</code></pre>
+
+<h3>Where is α and β?</h3>
+
+<p>The smoothing factors of LDA are at present automated.</p>
 
 <h2>Roadmap</h2>
 
@@ -61,7 +151,8 @@
 <li>v0.0.1
 
 <ul>
-<li>Documentation</li>
+<li>Output Words by Topic</li>
+<li>Read from files</li>
 </ul>
 </li>
 <li>v0.0.2
@@ -101,7 +192,7 @@
 </li>
 </ul><h2>Acknowledgements</h2>
 
-<p>Matilda.js is based on <a href="https://github.com/mimno/jsLDA">LDAjs</a>, <a href="http://radimrehurek.com/gensim/">Gensim</a>, and <a href="http://mallet.cs.umass.edu/">Mallet</a>, and deeply inspired by the works of <a href="http://www.cs.princeton.edu/%7Emimno/">David Mimno</a>, <a href="http://tedunderwood.com/">Ted Underwood</a>, <a href="http://www.cs.princeton.edu/%7Eblei/">David Blei</a>, and <a href="http://www.roalddahl.com/">Roald Dahl</a>.</p>
+<p>Matilda.js is based on <a href="https://github.com/mimno/jsLDA">LDAjs</a>, <a href="http://radimrehurek.com/gensim/">Gensim</a>, and <a href="http://mallet.cs.umass.edu/">Mallet</a>, and inspired by the works of <a href="http://www.cs.princeton.edu/%7Emimno/">David Mimno</a>, <a href="http://tedunderwood.com/">Ted Underwood</a>, <a href="http://www.cs.princeton.edu/%7Eblei/">David Blei</a>, <a href="http://www.roalddahl.com/">Roald Dahl</a>, and <a href="http://www.tankmuseum.org/ixbin/indexplus?_IXSS_=_IXMENU_%3dVehicles%26ALL%3dmatilda%26_IXACTION_%3dsummary%26%252asform%3d%252fsearch_form%252fbovtm_combined%26_IXSESSION_%3d3N23FDeXD_4%26TYPE%3darticle%26_IXFPFX_%3dtemplates%252fsummary%252f&amp;_IXFIRST_=12&amp;_IXSPFX_=templates/full/tvod/t&amp;_IXMAXHITS_=1&amp;submit-button=summary&amp;_IXSESSION_=3N23FDeXD_4&amp;_IXMENU_=Vehicles">Sir John Carden</a>.</p>
       </section>
       <footer>
         <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
