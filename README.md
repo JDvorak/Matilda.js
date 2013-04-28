@@ -82,11 +82,11 @@ And the topic of any
 #### Also Chains!
 Don't forget, this is a fluent library. You can chain things.
 
-  mM.addDocument(["Cats", "Dogs", "Parrots", "Fish"]) 
-    .addDocument(["Fish", "Sharks", "Parrots", "Green"])
-    .addDocument(["Tables", "Poker", "Green", "Sharks"])
-  
-  var topicMatrix = mM.train(5).topicCorrelations()
+    mM.addDocument(["Cats", "Dogs", "Parrots", "Fish"]) 
+      .addDocument(["Fish", "Sharks", "Parrots", "Green"])
+      .addDocument(["Tables", "Poker", "Green", "Sharks"])
+    
+    var topicMatrix = mM.train(5).topicCorrelations()
 
 ### Where is α and β?
 
