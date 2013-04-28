@@ -13,11 +13,10 @@ It presently performs Latent Dirichlet Allocation by way of Markov Chain Monte C
   - Sparse Gibbs Sampling
 
 ## Project Maturity
-This project is in pre-alpha. 
+This project is alpha. 
 This is __not__ a production library. 
-Expect the interface to change drastically from week to week, and the functionality and performance to flucuate wildly. 
-Your code __will__ break as this project progresses. 
-Proceed at your own risk.
+Expect the interface and functionality to change drastically from week to week.  
+__Proceed at your own risk.__
 
 ## Dependencies
 This is a standalone library. 
