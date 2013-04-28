@@ -1,12 +1,10 @@
 # Matilda.js
-v0.0.0.1alpha
-
+v0.0.1a
 - - -
 
 Matilda is a webscale inference toolkit. 
 
-This Javascript library makes it easy and convenient to perform inference on statistical topic models in both the browser and on the server. It presently performs Latent Dirichlet Allocation by way of Markov Chain Monte Carlo (MCMC), but a lot more is planned.
-
+This Javascript library makes it easy and convenient to perform inference on statistical topic models in both the browser and on the server. It presently performs Latent Dirichlet Allocation by way of Markov Chain Monte Carlo (MCMC).
 
 ## Acknowledgements
 Matilda.js is based on [LDAjs](https://github.com/mimno/jsLDA), [Gensim](http://radimrehurek.com/gensim/), and [Mallet](http://mallet.cs.umass.edu/), and deeply inspired by the works of [David Mimno](http://www.cs.princeton.edu/~mimno/), [Ted Underwood](http://tedunderwood.com/), [David Blei](http://www.cs.princeton.edu/~blei/), and [Roald Dahl](http://www.roalddahl.com/).
