@@ -28,7 +28,8 @@ Matilda is a fluently structured toolkit styled after d3.js.
 
 #### Step 1. Instantiate a Model
 The basic unit of Matilda is a Matilda model.
-    var mM = new Matilda.Model();
+
+      var mM = new Matilda.Model();
 
 A model has two core components. An engine, and a model. 
 By default, the engine is a Simplified Gibbs Sampler (siGS), and the model is a Latent Dirichlet Allocation (LDA) based Topic Model. 
