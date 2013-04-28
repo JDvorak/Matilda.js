@@ -87,6 +87,13 @@ They represent the features that the model will be trained on.</p>
   .addDocument(["Tables", "Poker", "Green", "Sharks"]);
 </code></pre>
 
+<p>But it also takes an array of arrays.</p>
+
+<pre><code>mM.addDocument([["Cats", "Dogs", "Parrots", "Fish"], 
+                ["Fish", "Sharks", "Parrots", "Green"],
+                ["Tables", "Poker", "Green", "Sharks"]])  
+</code></pre>
+
 <p>For natural word pre-rocessing <a href="https://github.com/NaturalNode/natural">NaturalNode</a> is highly recommended.</p>
 
 <h4>Step 3. Train</h4>
@@ -105,7 +112,7 @@ It is recommended that at least 50 iterations be made, but for this simple examp
 <pre><code>mM.train(5);
 </code></pre>
 
-<p><strong>WARNING:</strong> Setting the Model's Topic Count will erase all model data.</p>
+<p><strong>WARNING:</strong> Setting the Model's Topic Count <em>after</em> training will erase all training.</p>
 
 <h4>Step 4. Wait</h4>
 
@@ -119,12 +126,17 @@ A Topic by Topic matrix of correlations may be obtained by calling the topicCorr
 <pre><code>mM.topicCorrelations();
 </code></pre>
 
-<p>A list of words by each Topic may be obtained by calling the wordsByTopics method.</p>
+<p>You can get back the documents containing their respective features, and their topic proportions.</p>
 
-<pre><code>mM.wordsByTopics();
+<pre><code>mM.getDocuments();
 </code></pre>
 
-<p>You can even query the words themselves!</p>
+<p>You can get an object containing all the Topics, and their words.</p>
+
+<pre><code>mM.getTopics();
+</code></pre>
+
+<p>You can even look over the words themselves and their topic memberships.</p>
 
 <pre><code>mM.getVocabulary();
 </code></pre>
