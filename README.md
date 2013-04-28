@@ -1,5 +1,5 @@
 # Matilda.js
-v0.0.1a
+v0.0.1
 =======
 
 
@@ -94,7 +94,8 @@ The smoothing factors of LDA are at present automated.
 
 ## Roadmap
 * v0.0.1
-  - Documentation
+  - Output Words by Topic
+  - Read from files
 * v0.0.2
   - Simplified Belief Propagation
 * v0.0.3
