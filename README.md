@@ -142,6 +142,7 @@ The smoothing factors of LDA are at present automated.
   - Fast Belief Propagation
   - Online Fast Belief Propagation
 * v0.0.5
+  - Correlated Topic Model (CTM)
   - Relational Topic Model (RTM)
   - Author Topic Model (ATM)
   - Topic User Community Model (TUCM)
