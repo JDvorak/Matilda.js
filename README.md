@@ -51,9 +51,9 @@ For natural word pre-rocessing [NaturalNode](https://github.com/NaturalNode/natu
 
 Now that the documents have been added, you can train your model.
 By default models are set to five topics.
-You can overide this defaults by using the setTopicCount method.
+You can overide this defaults by using the setNumberOfTopics method.
 
-   mM.setTopicCount(3);
+   mM.setNumberOfTopics(3);
 
 It looks like everything is good to go. 
 Time to train.
@@ -61,6 +61,8 @@ Train is a method which takes a number which represents the number of iterations
 It is recommended that at least 50 iterations be made, but for this simple example 5 will do.
 
     mM.train(5);
+
+__WARNING:__ Setting the Model's Topic Count will erase all model data.
 
 #### Step 4. Wait
 
@@ -77,12 +79,15 @@ A list of words by each Topic may be obtained by calling the wordsByTopics metho
 
     mM.wordsByTopics();
 
-And the topic of any 
+You can even query the words themselves!
+
+    mM.getVocabulary();
 
 #### Also Chains!
 Don't forget, this is a fluent library. You can chain things.
 
-    mM.addDocument(["Cats", "Dogs", "Parrots", "Fish"]) 
+    mM.setNumberOfTopics(3)
+      .addDocument(["Cats", "Dogs", "Parrots", "Fish"]) 
       .addDocument(["Fish", "Sharks", "Parrots", "Green"])
       .addDocument(["Tables", "Poker", "Green", "Sharks"])
     

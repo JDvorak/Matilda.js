@@ -17,9 +17,10 @@ function Model(params) {
       words             = {};
 
   this.setNumberOfTopics = function(K) {
-
     numberOfTopics = K
     _recalculateAlpha();
+    _initializeTopics();
+    return this;
   }; 
 
   this.toString = function() {
@@ -99,7 +100,7 @@ function Model(params) {
           }
 
           numberOfWords++;
-          _reCalculateBeta();
+          _recalculateBeta();
         };
 
         _assignRandomly(words[token]);
@@ -126,12 +127,12 @@ function Model(params) {
     var topicWordCounts = _emptyMatrix(numberOfWords, numberOfTopics),
         highest;
 
-    for (var t = 0; t < numberOfTopics; t++) {
-      highest = 0;
-      for (w in topics[t].withWord) {
-        topicWordCounts[]
-      }
-    }
+    // for (var t = 0; t < numberOfTopics; t++) {
+    //   highest = 0;
+    //   for (w in topics[t].withWord) {
+    //     topicWordCounts[]
+    //   }
+    // }
   };
 
   this.topicCorrelations = function(){
@@ -216,11 +217,13 @@ function Model(params) {
 
 
   var _initializeTopics = function(){
+    topics = undefined;
+    topicWeights = undefined;
     for (var k = 0; k < numberOfTopics; k++) {
       topicWeights[k] = (1/numberOfTopics);
       topics[k] = {
                   _id:       k,
-                  withWord:  {}, // UNINTUITIVE NAME
+                  withWord:  {}, 
                   wordTotal: 0, 
                   };
     };
@@ -249,14 +252,14 @@ function Model(params) {
   };
 
   var _recalculateBeta = function() {
-    beta = numberOfWords/200;
+    alpha = numberOfWords/200;
   }
 
-  var _recaclculateAlpha = function() {
-    alpha = numberOfTopics/50
+  var _recalculateAlpha = function() {
+    beta = numberOfTopics/50
   }
 
 
-  _readParams(params);
+  // _readParams(params);
   _initializeTopics();
 };
