@@ -26,7 +26,7 @@ function Model(params) {
     console.log(topics, topicWeights, documents, words);
   };
 
-  this.train = function(n, callback) {
+  this.train = function(n, callback, context) {
     var sum, curWord;
 
     for (var iterations = 0; iterations < n; iterations++) {
@@ -64,11 +64,12 @@ function Model(params) {
         
       });
 
+      nowCallback(callback, context)
     };
     return this;
   };
 
-  this.addDocument = function(doc, callback){
+  this.addDocument = function(doc, callback, context){
     if (doc instanceof Array) {
       if (doc[0] instanceof Array) {
         for (var subDoc = 0, len = doc.length; subDoc < len; subDoc++) {
@@ -115,6 +116,7 @@ function Model(params) {
         documents.push(newDoc);
         numberOfDocuments++;
 
+        nowCallback(callback, context, doc)
       }
     } else {
       throw new Error("Pre-process Your Data and Try Again.");
@@ -170,6 +172,7 @@ function Model(params) {
       }, this);
     }
 
+    console.log(meanLogLikelihood, correlationMatrix)
     matrixEach(correlationMatrix, function(t1, t2) {
       correlationMatrix[t1][t2] *= normalizer
     }, this);
@@ -184,7 +187,6 @@ function Model(params) {
 
     return correlationMatrix;
   };
-
 
   var initializeTopics = function(){
     topics = [];
@@ -214,6 +216,16 @@ function Model(params) {
 
   var recalculateAlpha = function() {
     beta = numberOfTopics/50
+  }
+
+  var nowCallback = function(callback, context, whatElse) {
+    if (!callback) return;
+    var dataObject = {topics: topics, 
+                      vocab: words,
+                      documents: documents
+                     };
+
+    callback.call(context, dataObject, whatElse)
   }
 
   // readParams(params);

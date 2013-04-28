@@ -51,6 +51,17 @@ But it also takes an array of arrays.
                     ["Fish", "Sharks", "Parrots", "Green"],
                     ["Tables", "Poker", "Green", "Sharks"]])  
 
+And it also takes a callback.
+When sending multiple documents via addDocument, the callback is run after
+every individual document is inserted into the object.
+The callback receives an object containing model data, and the current document
+
+    mM.addDocument(["Cats", "Dogs", "Parrots", "Fish"], function(dataObject, curDoc) {
+      console.log(dataObject.vocab)
+      console.log(dataObject.topics)
+      console.log(dataObject.documents)
+      }) 
+
 For natural word pre-rocessing [NaturalNode](https://github.com/NaturalNode/natural) is highly recommended.
 
 #### Step 3. Train
@@ -64,11 +75,20 @@ You can overide this defaults by using the setNumberOfTopics method.
 It looks like everything is good to go. 
 Time to train.
 Train is a method which takes a number which represents the number of iterations.
-It is recommended that at least 50 iterations be made, but for this simple example 5 will do.
+It is recommended that at least 50 iterations be made, but for this simple example 5 will do. 
 
     mM.train(5);
 
 __WARNING:__ Setting the Model's Topic Count _after_ training will erase all training.
+
+But that's not all, the train method also takes a callback which is called after every iteration of the training. 
+The callback receives an object containing the topics, vocabulary, and document data of the model.
+
+    mM.train(5, function(modelData){ 
+      console.log(modelData.vocab)
+      console.log(modelData.topics)
+      console.log(modelData.documents)
+    })
 
 #### Step 4. Wait
 
@@ -97,11 +117,11 @@ You can even look over the words themselves and their topic memberships.
 Don't forget, this is a fluent library. You can chain things.
 
     mM.setNumberOfTopics(3)
-      .addDocument(["Cats", "Dogs", "Parrots", "Fish"]) 
-      .addDocument(["Fish", "Sharks", "Parrots", "Green"])
-      .addDocument(["Tables", "Poker", "Green", "Sharks"])
+      .addDocument([["Cats", "Dogs", "Parrots", "Fish"], 
+                    ["Fish", "Sharks", "Parrots", "Green"],
+                    ["Tables", "Poker", "Green", "Sharks"]]);  
     
-    var topicMatrix = mM.train(5).topicCorrelations()
+    var topicMatrix = mM.train(5).topicCorrelations();
 
 ### Where is α and β?
 
