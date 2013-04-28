@@ -34,9 +34,9 @@ function Model(params) {
           sum = 0;
           
           for (var t = 0; t < numberOfTopics; t++) {
-            topicWeights[t]  = (beta + currentDoc.topicsCounts[t])  
-            topicWeights[t] *= (alpha + topics[t].withWord[curWord._id]) 
-            topicWeights[t] /= (numberOfWords * beta + topics[t].wordTotal);               
+            topicWeights[t]  = (alpha + currentDoc.topicsCounts[t])  
+            topicWeights[t] *= (beta + topics[t].withWord[curWord._id]) 
+            topicWeights[t] /= (numberOfWords * alpha + topics[t].wordTotal);               
             sum += topicWeights[t]
           }
           curWord.isTopic = _weightedRandom(topicWeights, sum)
@@ -119,12 +119,12 @@ function Model(params) {
     var topicWordCounts = _emptyMatrix(numberOfWords, numberOfTopics),
         highest;
 
-    // for (var t = 0; t < numberOfTopics; t++) {
-    //   highest = 0;
-    //   for (w in topics[t].withWord) {
-    //     topicWordCounts[]
-    //   }
-    // }
+    for (var t = 0; t < numberOfTopics; t++) {
+      highest = 0;
+      for (w in topics[t].withWord) {
+        topicWordCounts[]
+      }
+    }
   };
 
   this.topicCorrelations = function(){
