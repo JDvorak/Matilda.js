@@ -147,8 +147,14 @@ The smoothing factors of LDA are at present automated.
   - Topic User Community Model (TUCM)
 * v0.1.0
   - Natural Language Processing
+* v0.2.0
+  - Statistical Analysis
+* v0.3.0
+  - Redis Support
+* v0.5.0
+  - Neo4.js Support
 * v1.0.0
-  - Full Support for Markov Logic, and Graphical Models
+  - Markov Logic
 
 
 ## Acknowledgements
