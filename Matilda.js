@@ -1,23 +1,12 @@
 /* Matilda.js
- * Gibbs Sampling for Latent Dirichlet Allocation
+ * Webscale Statistical Inference
  */
-
- // var model = new Model({model: "LDA", engine: "Gibbs"})
- //
- // model.readDirectory("../Training") <-- Thing to be Done To
- //      .iterate(10, callback)  <-- Run Model (This is done to it)
- //      .swapEngine("VB")
- //      .iterate({perplexity: 0.4}, callback) <-- Run Model, give object for case
- //      .readDirectory("../Test")
- //        .sortBy.Topic(callback)
- //        .listWordsBy.Topic(callback)
-
 
 function Model(params) {
 
   var topics            = [],
       numberOfTopics    = 0,   
-      topicWeights      = {},    
+      topicWeights      = [],    
       documents         = [], 
       numberOfDocuments = 0, 
       wordCount         = 0,
@@ -30,25 +19,44 @@ function Model(params) {
     console.log(topics, topicWeights, documents, words);
   };
 
-  this.train = function(callback) {
-    documents.forEach(function(currentDoc, i) {
-      for (var w = 0; w < currentDoc.wordCount; w++) {
-        var curWord = currentDoc.bagOfWords[w];
-        _shelf(curWord, currentDoc, 'pull')
+  this.train = function(n, callback) {
+    var sum, curWord;
 
-        var sum = 0;
-        for (var t = 0; t < numberOfTopics; t++) {
-          topicWeights[t]  = (beta + currentDoc.topicsCounts[t])  // ALL DOCUMENTS
-          topicWeights[t] *= (alpha + topics[t].withWord[curWord._id]) 
-          topicWeights[t] /= (numberOfWords * beta + topics[t].wordTotal);               
-          sum += topicWeights[t]
+    for (var iterations = 0; iterations < n; iterations++) {
+      documents.forEach(function(currentDoc, i) {
+        for (var w = 0; w < currentDoc.wordCount; w++) {
+          curWord = currentDoc.bagOfWords[w];
+
+
+          topics[curWord.isTopic].withWord[curWord._id]--;
+          topics[curWord.isTopic].wordTotal--;
+          
+          sum = 0;
+          
+          for (var t = 0; t < numberOfTopics; t++) {
+            topicWeights[t]  = (beta + currentDoc.topicsCounts[t])  
+            topicWeights[t] *= (alpha + topics[t].withWord[curWord._id]) 
+            topicWeights[t] /= (numberOfWords * beta + topics[t].wordTotal);               
+            sum += topicWeights[t]
+          }
+          curWord.isTopic = _weightedRandom(topicWeights, sum)
+
+          topics[curWord.isTopic].withWord[curWord._id]++;
+          topics[curWord.isTopic].wordTotal++;
         }
 
-        curWord.isTopic = _weightedRandom(topicWeights, sum)
-        _shelf(curWord, currentDoc, 'put')
-      }
-    });
+      for (var t = 0; t < numberOfTopics; t++) {
+        topicWeights[t] /= sum;
+        currentDoc.topicsCounts[t] = 0;
+      };
 
+      currentDoc.bagOfWords.forEach(function (token) {
+        currentDoc.topicsCounts[token.isTopic] += 1;
+      });
+        
+      });
+
+    };
     return this;
   };
 
@@ -95,23 +103,23 @@ function Model(params) {
 
 
     } else {
-      throw new Error("String Tokenization Not Yet Implemented. Pre-process Your Data and Try Again.");
+      throw new Error("Pre-process Your Data and Try Again.");
     };
 
     return this;
   }
 
-
-
   this.wordsByTopics = function(){
+    var topicWordCounts = _emptyMatrix(),
+        highest;
 
+    for (var t = 0; t < numberOfTopics; t++) {
+      highest = 0;
+      for (w in topics[t].withWord) {
+
+      }
+    }
   };
-
-  this.iterate = function(n){
-    for (var i = 0; i < n; i++) {
-      this.train();
-    };
-  }
 
   this.topicCorrelations = function(){
     var correlationMatrix = _emptyMatrix(numberOfTopics),
@@ -120,8 +128,8 @@ function Model(params) {
         normalizer = 1.0 / (numberOfDocuments - 1),
         standardDeviations = [];
 
-        debugger;
-    for (var t = 0; t < numberOfTopics; t++) {
+
+    for (var t = 0; t < numberOfTopics-1; t++) {
       meanLogLikelihood[t] = 0.0;
     }
 
@@ -129,18 +137,19 @@ function Model(params) {
       var bagOfWordsLength = currentDoc.bagOfWords.length
 
       logLikelihoodOfDoc[i] = [];
-      for (var t = 0; t < numberOfTopics; t++) {
+      for (var t = 0; t < numberOfTopics-1; t++) {
         logLikelihoodOfDoc[i][t] = Math.log((currentDoc.topicsCounts[t] + beta) /
-                                          (bagOfWordsLength + numberOfTopics * beta))
+                                           (bagOfWordsLength + numberOfTopics * beta))
         meanLogLikelihood[t] += logLikelihoodOfDoc[i][t];
+
       }
     });
 
-    for (var t = 0; t < numberOfTopics; t++) {
+    for (var t = 0; t < numberOfTopics-1; t++) {
       meanLogLikelihood[t] /= numberOfDocuments;
     }
 
-    for (var d = 0; d < numberOfDocuments; d++) {      
+    for (var d = 0; d < numberOfDocuments-1; d++) {      
       _matrixEach(correlationMatrix, function(t1, t2){
         correlationMatrix[t1][t2] +=  (logLikelihoodOfDoc[d][t1] - meanLogLikelihood[t1]) *
                                       (logLikelihoodOfDoc[d][t2] - meanLogLikelihood[t2])
@@ -151,8 +160,7 @@ function Model(params) {
       correlationMatrix[t1][t2] *= normalizer
     }, this);
 
-    //Set standardDeviations
-    for (var t = 0; t < numberOfTopics; t++) {
+    for (var t = 0; t < numberOfTopics-1; t++) {
       standardDeviations[t] = Math.sqrt(correlationMatrix[t][t]);
     }
 
@@ -162,7 +170,6 @@ function Model(params) {
 
     return correlationMatrix;
   };
-
 
   //Helpers
 
@@ -191,25 +198,13 @@ function Model(params) {
     }
   }
 
-  var _shelf = function(curWord, currentDoc, direction) {
-    var move = 0;
-    if (direction === 'put') {
-      move = 1;
-    } else if (direction === 'pull') {
-      move = -1;
-    }
-
-    topics[curWord.isTopic].withWord[curWord._id] += move;
-    currentDoc.topicsCounts[curWord.isTopic] += move;
-    topics[curWord.isTopic].wordTotal += move;
-  }
 
   var _initializeTopics = function(){
     for (var k = 0; k < numberOfTopics; k++) {
       topicWeights[k] = (1/numberOfTopics);
       topics[k] = {
                   _id:       k,
-                  withWord:  {}, 
+                  withWord:  {}, // UNINTUITIVE NAME
                   wordTotal: 0, 
                   };
     };
@@ -234,9 +229,9 @@ function Model(params) {
       i++;
       sample -= weights[i];
     }
-
     return i;
   };
+
 
   var _readParams = function(params) {
     if (params.topicWeights) topicWeights = params.topicWeights;
