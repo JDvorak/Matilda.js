@@ -41,22 +41,28 @@ The method addDocuments takes an array of words.
 But they need not be strings, they can also be numbers.
 They represent the features that the model will be trained on.
 
-    mM.addDocument(["Cats", "Dogs", "Parrots", "Fish"]) 
-      .addDocument(["Fish", "Sharks", "Parrots", "Green"])
-      .addDocument(["Tables", "Poker", "Green", "Sharks"]);
+    mM.addDocument(['Matilda','said','Never','do','anything','by','halves','if','you','want','to','get','away','with','it','Be','outrageous','Go','the','whole','hog','Make','sure','everything','you','do','is','so','completely','crazy','it','s','unbelievable']);    
+    
+    mM.addDocument(['When','the','earlier','Infantry','Tank','Mark','I','which','was','also','known','as','Matilda','was','removed','from','service','the','Infantry','Tank','Mk','II','became','known','simply','as','the','Matilda' ]);
+    
+    mM.addDocument(['When','war','was','recognised','as','imminent','production','of','the','Matilda','II','was','ordered','and','that','of','the','Matilda','I','curtailed','The','first','order','was','placed','shortly','after','trials','were','completed','with','140','ordered','from','Vulcan','Foundry','in','mid','1938' ]);
 
-But it also takes an array of arrays.
+    mM.addDocument([ 'So','Matilda','s','strong','young','mind','continued','to','grow','nurtured','by','the','voices','of','all','those','authors','who','had','sent','their','books','out','into','the','world','like','ships','on','the','sea','These','books','gave','Matilda','a','hopeful','and','comforting','message','You','are','not','alone' ]);
 
-    mM.addDocument([["Cats", "Dogs", "Parrots", "Fish"], 
-                    ["Fish", "Sharks", "Parrots", "Green"],
-                    ["Tables", "Poker", "Green", "Sharks"]])  
+But a model can also take an array of arrays.
+
+    var document3 = ['Matilda','said','Never','do','anything','by','halves','if','you','want','to','get','away','with','it','Be','outrageous','Go','the','whole','hog','Make','sure','everything','you','do','is','so','completely','crazy','it','s','unbelievable'];
+
+    mM.addDocument([document1, document2, document3]])  
 
 And it also takes a callback.
 When sending multiple documents via addDocument, the callback is run after
 every individual document is inserted into the object.
 The callback receives an object containing model data, and the current document
 
-    mM.addDocument(["Cats", "Dogs", "Parrots", "Fish"], 
+    var arrayOfArrays = [document1, document2, document3]
+
+    mM.addDocument(arrayOfArrays, 
                     function(dataObject, curDoc) {
                       console.log(dataObject.vocab)
                       console.log(dataObject.topics)
