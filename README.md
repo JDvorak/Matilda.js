@@ -137,23 +137,9 @@ You can even look over the words themselves and their topic memberships.
 
     mM.getVocabulary();
 
-#### Also Chains!
-Don't forget, this is a fluent library. You can chain things.
-
-    mM.setNumberOfTopics(15)
-      .addDocument(arrayOfArrays,
-                    function(dataObject) {
-                      console.log(modelData.vocab)
-                      console.log(modelData.topics)
-                      console.log(modelData.documents)
-                    });  
-    
-    var topicMatrix = mM.train(5).topicCorrelations();
-
 ### Where is α and β?
 
 The smoothing factors of LDA are at present automated.
-
 ## Roadmap
 * v0.0.2
   - Saving to JSON
