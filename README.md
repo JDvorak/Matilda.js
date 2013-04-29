@@ -140,10 +140,8 @@ You can even look over the words themselves and their topic memberships.
 #### Also Chains!
 Don't forget, this is a fluent library. You can chain things.
 
-    mM.setNumberOfTopics(3)
-      .addDocument([["Cats", "Dogs", "Parrots", "Fish"], 
-                    ["Fish", "Sharks", "Parrots", "Green"],
-                    ["Tables", "Poker", "Green", "Sharks"]],
+    mM.setNumberOfTopics(15)
+      .addDocument(arrayOfArrays,
                     function(dataObject) {
                       console.log(modelData.vocab)
                       console.log(modelData.topics)
