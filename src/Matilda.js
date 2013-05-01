@@ -257,17 +257,70 @@ Matilda.Model = (function () {
       return correlationMatrix;
     };
 
+    this.getWordsByTopics = function() {
+      var tuples   = [],
+          newArray = [];
+
+      for (var t = 0; t < numberOfTopics; t++) {
+        newArray = [];
+
+        for (var w in topics[t].withWord){
+          tuples.push(w, topics[t].withWord[w]);
+          tuples.sort(function(a, b) { return a[1] < b[1] ? 1 : a[1] > b[1] ? -1 : 0 });
+        }
+        
+        newArray.push([t, [tuples]]);
+        tuples = newArray;
+      }
+
+      return tuples;
+    };
+
+    this.getSimilarDocuments = function(docIndex) {
+      var self = documents[docIndex].topicsCounts,
+          difference = 0,
+          tuples   = [],
+          newArray = [],
+          list = {},
+          other;
+
+      for (var i = 0; i < numberOfDocuments; i++) {
+        other = documents[i].topicsCounts;
+
+        for (var m = 0; m < other.length; m++) {
+          // if (difference < .4) {
+          //   difference = 0.0;
+          //   break;
+          // }
+
+          for (var c = 0; c < self.length; c++ ) {
+            list[i] = 1/(Math.abs(self[c] - other[m]) + 1)
+          }
+
+          
+        
+        }        
+      }
+
+      for (i in list) {
+          tuples.push(i, list[i]);
+          tuples.sort(function(a, b) { return a[1] > b[1] ? 1 : a[1] < b[1] ? -1 : 0 });
+        }
+
+      return tuples;
+    };
+
     this.getDocuments = function() {
       return documents;
-    }
+    };
 
     this.getTopics = function() {
       return topics;
-    }
+    };
 
     this.getVocabulary = function() {
       return words;
-    }
+    };
 
     initializeTopics();
   };
