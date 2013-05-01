@@ -259,21 +259,20 @@ Matilda.Model = (function () {
 
     this.getWordsByTopics = function() {
       var tuples   = [],
-          newArray = [];
+          results = [];
 
       for (var t = 0; t < numberOfTopics; t++) {
         newArray = [];
 
         for (var w in topics[t].withWord){
-          tuples.push(w, topics[t].withWord[w]);
+          tuples.push([w, topics[t].withWord[w]]);
           tuples.sort(function(a, b) { return a[1] < b[1] ? 1 : a[1] > b[1] ? -1 : 0 });
         }
-        
-        newArray.push([t, [tuples]]);
-        tuples = newArray;
+        results[t] = tuples;
+        tuples = [];
       }
 
-      return tuples;
+      return results;
     };
 
     this.getSimilarDocuments = function(docIndex) {
