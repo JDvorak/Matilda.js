@@ -294,10 +294,11 @@ Matilda.Model = (function () {
       }
 
       for (i in list) {
-          tuples.push(i, list[i]);
-          tuples.sort(function(a, b) { return a[1] > b[1] ? 1 : a[1] < b[1] ? -1 : 0 });
+          tuples.push([i, list[i]]);
+          console.log(tuples)
+          tuples.sort(function(a, b) { return a[1] < b[1] ? 1 : a[1] > b[1] ? -1 : 0 });
         }
-      // return list;
+
       return tuples;
     };
 
