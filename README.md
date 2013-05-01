@@ -5,8 +5,8 @@ v0.0.1
 
 Matilda is a webscale inference toolkit. 
 
-This Javascript library makes it easy and convenient to perform inference on statistical topic models in both the browser and on the server. 
-It presently performs Latent Dirichlet Allocation by way of Markov Chain Monte Carlo (MCMC).
+This Javascript library makes it easy to perform inference on statistical topic models anywhere.
+At present, Matilda performs Latent Dirichlet Allocation by way of Markov Chain Monte Carlo (MCMC).
 
 ## Supported Techniques
 * Latent Dirichlet Allocation
@@ -14,8 +14,8 @@ It presently performs Latent Dirichlet Allocation by way of Markov Chain Monte C
 
 ## Project Maturity
 This project is alpha. 
-This is __not__ a production library. 
-Expect the interface and functionality to change drastically from week to week.  
+This is __not__ a production library. Do not rely on it.
+The interface and functionality will change drastically from week to week.  
 __Proceed at your own risk.__
 
 ## Dependencies
@@ -30,16 +30,14 @@ The basic unit of Matilda is a Matilda model.
 
       var mM = new Matilda.Model();
 
-A model has two core components. An engine, and a model. 
-By default, the engine is a Simplified Gibbs Sampler (siGS), and the model is a Latent Dirichlet Allocation (LDA) based Topic Model. 
-At present, this is the only model and only engine available.
-
 #### Step 2. Add Documents
 
 To train a Matilda model, you must first addDocuments. 
 The method addDocuments takes an array of words.
-But they need not be strings, they can also be numbers.
-They represent the features that the model will be trained on.
+But they need not be strings. 
+A Matilda model is representation agnostic.
+So long as they are in an array everything will work out.
+All the items in the array are are the features that the model will be trained on.
 
     mM.addDocument(['Matilda','said','Never','do','anything','by','halves',
                     'if','you','want','to','get','away','with','it',
@@ -76,7 +74,8 @@ But a model can also take an array of arrays.
 
     mM.addDocument([document1, document2, document3]])  
 
-And it also takes a callback.
+Callbacks are also supported.
+
 When sending multiple documents via addDocument, the callback is run after
 every individual document is inserted into the object.
 The callback receives an object containing model data, and the current document
@@ -85,12 +84,12 @@ The callback receives an object containing model data, and the current document
 
     mM.addDocument(arrayOfArrays, 
                     function(dataObject, curDoc) {
-                      console.log(dataObject.vocab)
-                      console.log(dataObject.topics)
-                      console.log(dataObject.documents)
-                    }) 
+                      console.log(dataObject.vocab);
+                      console.log(dataObject.topics);
+                      console.log(dataObject.documents);
+                    });
 
-For natural word pre-rocessing [NaturalNode](https://github.com/NaturalNode/natural) is highly recommended.
+For natural word pre-processing [NaturalNode](https://github.com/NaturalNode/natural) is highly recommended.
 
 #### Step 3. Train
 
@@ -107,16 +106,17 @@ It is recommended that at least 50 iterations be made, but for this simple examp
 
     mM.train(5);
 
-__WARNING:__ Setting the Model's Topic Count _after_ training will erase all training.
+__WARNING:__ Do not call setNumberOfTopics after training. 
+Setting the Model's Topic Count _after_ training will erase all training.
 
-But that's not all, the train method also takes a callback which is called after every iteration of the training. 
+The train method also takes a callback which is called after every iteration of the training. 
 The callback receives an object containing the topics, vocabulary, and document data of the model.
 
     mM.train(5, function(modelData){ 
-      console.log(modelData.vocab)
-      console.log(modelData.topics)
-      console.log(modelData.documents)
-    })
+      console.log(modelData.vocab);
+      console.log(modelData.topics);
+      console.log(modelData.documents);
+    });
 
 #### Step 4. Enjoy
 
