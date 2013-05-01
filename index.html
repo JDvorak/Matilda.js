@@ -32,7 +32,7 @@
       <section>
         <h1>Matilda.js</h1>
 
-<h1>v0.0.1</h1>
+<h1>v0.0.2</h1>
 
 <p>Matilda is a webscale inference toolkit. </p>
 
@@ -176,7 +176,7 @@ A Topic by Topic matrix of correlations may be obtained by calling the topicCorr
 <pre><code>mM.getDocuments();
 </code></pre>
 
-<p>You can get an object containing all the Topics, and their words.</p>
+<p>You can get an object containing all the Topics, and their words. </p>
 
 <pre><code>mM.getTopics();
 </code></pre>
@@ -186,33 +186,55 @@ A Topic by Topic matrix of correlations may be obtained by calling the topicCorr
 <pre><code>mM.getVocabulary();
 </code></pre>
 
+<p>But maybe you want your data more structured. 
+You can get back your words organized by topic, and sorted by frequency.</p>
+
+<pre><code>mM.getWordsByTopics();
+</code></pre>
+
+<p>Or maybe you need to organize your documents by similarity. 
+Just call getSimilarDocuments and pass in one of the documents you've already added to the collection. 
+In return you'll see all the documents similar to it.</p>
+
+<pre><code>mM.getSimilarDocuments(docIndex);
+</code></pre>
+
+<h4>Step 5. Mix and Match</h4>
+
+<p>Matilda has been made as modular and unopinionated as possible, and works well with Node libraries and client-side libraries alike.</p>
+
+<p>Combine Matilda with MongoDB and maintain an index of entries sorted by topical similarity. 
+Mix mM.topicCorrelations() with a static blogging engine and compose a topical map of your blog every regeneration.
+Plug in the Google Analytics API and cluster your customers by behavioral traits.
+Match it with an email service and fight spam in a whole new way, or just organize your inbox by subject.
+Feed your forum into a Matilda Model and find out what your community is talking about.</p>
+
+<p>And that's just the beginning. </p>
+
+<p>There are big plans.</p>
+
 <h3>Where is α and β?</h3>
 
 <p>The smoothing factors of LDA are at present automated.</p>
 
+<h3>Subscribe to our Newsletter!</h3>
+
+<p>Keep up to date. Get the latest news on the next big thing delivered to your inbox. 
+<a href="http://eepurl.com/yWEqf">Subscribe to our newsletter</a></p>
+
 <h2>Roadmap</h2>
 
 <ul>
-<li>v0.0.2
-
-<ul>
-<li>Saving to JSON</li>
-<li>Loading from JSON</li>
-<li>Read from files</li>
-<li>Simplified Belief Propagation</li>
-</ul>
-</li>
 <li>v0.0.3
 
 <ul>
-<li>Fast Gibbs Sampling</li>
-<li>Online Fast Gibbs Sampling</li>
+<li>File System Support</li>
 </ul>
 </li>
 <li>v0.0.4
 
 <ul>
-<li>Fast Belief Propagation</li>
+<li>Convert to Belief Propagation</li>
 <li>Online Fast Belief Propagation</li>
 </ul>
 </li>
@@ -228,39 +250,18 @@ A Topic by Topic matrix of correlations may be obtained by calling the topicCorr
 <li>v0.1.0
 
 <ul>
-<li>Natural Language Processing</li>
+<li>Hierarchical Pitman–Yor</li>
+<li>Pachinko Allocation</li>
 </ul>
 </li>
 <li>v0.2.0
 
 <ul>
-<li>Statistical Analysis</li>
+<li>Named Entity Recognition</li>
+<li>Grasshopper</li>
 </ul>
 </li>
-<li>v0.3.0
-
-<ul>
-<li>Redis Support</li>
-</ul>
-</li>
-<li>v0.5.0
-
-<ul>
-<li>Neo4.js Support</li>
-</ul>
-</li>
-<li>v1.0.0
-
-<ul>
-<li>Markov Logic</li>
-</ul>
-</li>
-</ul><h2>Newletter</h2>
-
-<p>Keep up to date. Have the latest news on Javascript Natural Language Processing delivered to your inbox.
-<a href="http://eepurl.com/yWEqf">Subscribe to our newsletter</a></p>
-
-<h2>Acknowledgements</h2>
+</ul><h2>Acknowledgements</h2>
 
 <p>Matilda.js is based on <a href="https://github.com/mimno/jsLDA">LDAjs</a>, <a href="http://radimrehurek.com/gensim/">Gensim</a>, and <a href="http://mallet.cs.umass.edu/">Mallet</a>, and inspired by the works of <a href="http://www.cs.princeton.edu/%7Emimno/">David Mimno</a>, <a href="http://tedunderwood.com/">Ted Underwood</a>, <a href="http://www.cs.princeton.edu/%7Eblei/">David Blei</a>, <a href="http://www.roalddahl.com/">Roald Dahl</a>, and <a href="http://www.tankmuseum.org/ixbin/indexplus?_IXSS_=_IXMENU_%3dVehicles%26ALL%3dmatilda%26_IXACTION_%3dsummary%26%252asform%3d%252fsearch_form%252fbovtm_combined%26_IXSESSION_%3d3N23FDeXD_4%26TYPE%3darticle%26_IXFPFX_%3dtemplates%252fsummary%252f&amp;_IXFIRST_=12&amp;_IXSPFX_=templates/full/tvod/t&amp;_IXMAXHITS_=1&amp;submit-button=summary&amp;_IXSESSION_=3N23FDeXD_4&amp;_IXMENU_=Vehicles">Sir John Carden</a>.</p>
       </section>
