@@ -278,9 +278,8 @@ Matilda.Model = (function () {
 
     this.getSimilarDocuments = function(docIndex) {
       var self = documents[docIndex].topicsCounts,
-          difference = 0,
           tuples   = [],
-          newArray = [],
+          difference = 0,
           list = {},
           other;
 
@@ -288,25 +287,17 @@ Matilda.Model = (function () {
         other = documents[i].topicsCounts;
 
         for (var m = 0; m < other.length; m++) {
-          // if (difference < .4) {
-          //   difference = 0.0;
-          //   break;
-          // }
-
-          for (var c = 0; c < self.length; c++ ) {
-            list[i] = 1/(Math.abs(self[c] - other[m]) + 1)
-          }
-
-          
-        
+          difference += 1/(Math.abs(self[m] - other[m]) + 1)
         }        
+          list[i] = difference /other.length;
+          difference = 0;
       }
 
       for (i in list) {
           tuples.push(i, list[i]);
           tuples.sort(function(a, b) { return a[1] > b[1] ? 1 : a[1] < b[1] ? -1 : 0 });
         }
-
+      // return list;
       return tuples;
     };
 
