@@ -1,5 +1,5 @@
 # Matilda.js
-v0.0.1
+v0.0.2
 =======
 
 
@@ -129,7 +129,7 @@ You can get back the documents containing their respective features, and their t
 
     mM.getDocuments();
 
-You can get an object containing all the Topics, and their words.
+You can get an object containing all the Topics, and their words. 
 
     mM.getTopics();
 
@@ -137,20 +137,39 @@ You can even look over the words themselves and their topic memberships.
 
     mM.getVocabulary();
 
+But maybe you want your data more structured. 
+You can get back your words organized by topic, and sorted by frequency.
+
+    mM.getWordsByTopics();
+
+Or maybe you need to organize your documents by similarity. 
+Just call getSimilarDocuments and pass in one of the documents you've already added to the collection. 
+In return you'll see all the documents similar to it.
+
+    mM.getSimilarDocuments(docIndex);
+
+#### Step 5. Mix and Match
+
+Matilda has been made as modular and unopinionated as possible, and works well with Node libraries and client-side libraries alike.
+
+Combine Matilda with MongoDB and maintain an index of entries sorted by topical similarity. 
+Mix mM.topicCorrelations() with a static blogging engine and compose a topical map of your blog every regeneration.
+Plug in the Google Analytics API and cluster your customers by behavioral traits.
+Match it with an email service and fight spam in a whole new way, or just organize your inbox by subject.
+Feed your forum into a Matilda Model and find out what your community is talking about.
+
+And that's just the beginning. 
+
+There are big plans.
+
 ### Where is α and β?
 
 The smoothing factors of LDA are at present automated.
 ## Roadmap
-* v0.0.2
-  - Saving to JSON
-  - Loading from JSON
-  - Read from files
-  - Simplified Belief Propagation
 * v0.0.3
-  - Fast Gibbs Sampling
-  - Online Fast Gibbs Sampling
+  - File System Support
 * v0.0.4
-  - Fast Belief Propagation
+  - Convert to Belief Propagation
   - Online Fast Belief Propagation
 * v0.0.5
   - Correlated Topic Model (CTM)
@@ -158,15 +177,11 @@ The smoothing factors of LDA are at present automated.
   - Author Topic Model (ATM)
   - Topic User Community Model (TUCM)
 * v0.1.0
-  - Natural Language Processing
+  - Hierarchical Pitman–Yor
+  - Pachinko Allocation
 * v0.2.0
-  - Statistical Analysis
-* v0.3.0
-  - Redis Support
-* v0.5.0
-  - Neo4.js Support
-* v1.0.0
-  - Markov Logic
+  - Named Entity Recognition
+  - Grasshopper
 
 
 ## Acknowledgements
