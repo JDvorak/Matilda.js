@@ -2,7 +2,6 @@
 v0.0.2
 =======
 
-
 Matilda is a webscale inference toolkit. 
 
 This Javascript library makes it easy to perform inference on statistical topic models anywhere.
