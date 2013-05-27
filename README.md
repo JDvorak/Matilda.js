@@ -1,5 +1,5 @@
 # Matilda.js
-v0.0.2
+  v0.0.2
 =======
 
 Matilda is a webscale inference toolkit. 
