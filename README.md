@@ -1,3 +1,5 @@
+# DEPRECATED - DO NOT USE.
+
 # Matilda.js
   v0.0.2
 =======
